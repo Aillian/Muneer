@@ -1,0 +1,37 @@
+# The Muneer app on this machine, talking to the model server on RunPod
+# (deploy/README.md, "C. Model on RunPod, app on a laptop"). Settings come
+# from .env; set MUNEER_BASE_URL there to the RunPod address, e.g.
+# https://<pod-id>-8000.proxy.runpod.net/v1
+#
+#   docker compose up --build -d            then open http://127.0.0.1:7860
+#   docker compose logs -f app              follow the app's log
+#   docker compose down --remove-orphans    stop it; this also removes the mock
+#                                           from mock mode (the database is kept)
+#
+# To try everything without the GPU, add the mock model server:
+#   docker compose -f docker-compose.yml -f docker-compose.mock.yml up --build
+
+name: muneer
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: deploy/app.Dockerfile
+    image: muneer-app
+    env_file: .env
+    environment:
+      # These override .env, whose values are meant for running without Docker.
+      APP_HOST: 0.0.0.0  # listen outside the container
+      APP_PORT: "7860"
+      DATABASE_PATH: /data/muneer.sqlite3
+      HF_TOKEN: ""  # only the model server downloads weights; keep the token out of the app
+    ports:
+      # Only this machine can open it; publishing it to the internet is a separate step.
+      - "127.0.0.1:${APP_PORT:-7860}:7860"
+    volumes:
+      - database:/data
+    restart: unless-stopped
+
+volumes:
+  database:  # the conversations, every turn and the review queue

@@ -1,0 +1,21 @@
+# Keep the build context small and private. Above all, the weights and the
+# training folder (its data and config) must never reach an image.
+model
+training
+private
+data
+**/.env
+**/.env.*
+!**/.env.example
+**/*.ipynb
+**/*.log
+**/*.sqlite3
+**/.gradio
+.venv
+venv
+.git
+**/__pycache__
+**/*.py[cod]
+.pytest_cache
+**/tests
+docs

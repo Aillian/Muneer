@@ -1,0 +1,42 @@
+# ---- Private: never commit ----
+# Model weights and training data. The weights live in a private Hugging
+# Face repo and the server downloads them at startup; of model/, only its
+# README is public. Of training/, only the config and its README are public:
+# the data, the notebook that uploaded the weights, and whatever a run writes
+# there (tokenized data, checkpoints, W&B logs) stay out, whatever they are named.
+/model/*
+!/model/README.md
+/training/*
+!/training/config.yaml
+!/training/README.md
+# Production prompts and other material kept out of the public repo.
+/private/
+# The evaluation.
+/eval/
+# The database: every conversation exactly as typed, every turn, and the review queue.
+/data/
+*.safetensors
+*.gguf
+*.bin
+*.pt
+*.pth
+*.ckpt
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Notebooks, logs and databases can hold tokens or real conversations.
+*.ipynb
+*.log
+*.sqlite3
+.gradio/
+
+# ---- Local artifacts ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.cache/

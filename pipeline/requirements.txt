@@ -1,0 +1,2 @@
+# The pipeline: placeholder filling, the guardrail and the simulated da'i.
+openai>=3.0

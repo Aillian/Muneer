@@ -1,0 +1,129 @@
+# Configuration of the run that produced the served model. The four
+# training_data/ files are private and not in this repository.
+
+# =========================
+# Base model
+# =========================
+base_model: /workspace/Qwen/Qwen3-14B
+model_type: AutoModelForCausalLM
+tokenizer_type: AutoTokenizer
+tokenizer_use_fast: true
+tokenizer_legacy: true
+trust_remote_code: true
+is_qwen_derived_model: true
+
+# =========================
+# Data
+# =========================
+# The four parts share one set of settings (the YAML anchor &dataset).
+datasets:
+  - path: training_data/part_1.jsonl
+    <<: &dataset
+      ds_type: json
+      type: chat_template
+      field_messages: messages
+      message_property_mappings:
+        role: role
+        content: content
+      roles_to_train: ["assistant"]
+      train_on_eos: turn
+      chat_template: jinja
+      chat_template_jinja: |
+        {%- for message in messages %}
+            {%- set content = message.content if message.content is string else '' %}
+            {%- if message.role == 'system' %}
+                {{- '<|im_start|>system\n' + content + '<|im_end|>\n' }}
+            {%- elif message.role == 'user' %}
+                {{- '<|im_start|>user\n' + content + '<|im_end|>\n' }}
+            {%- elif message.role == 'assistant' %}
+                {{- '<|im_start|>assistant\n' + content + '<|im_end|>\n' }}
+            {%- endif %}
+        {%- endfor %}
+        {%- if add_generation_prompt %}
+            {{- '<|im_start|>assistant\n' }}
+        {%- endif %}
+      roles:
+        user: ["user", "human"]
+        assistant: ["assistant", "gpt"]
+        system: ["system"]
+  - path: training_data/part_2.jsonl
+    <<: *dataset
+  - path: training_data/part_3.jsonl
+    <<: *dataset
+  - path: training_data/part_4.jsonl
+    <<: *dataset
+
+shuffle_merged_datasets: true
+val_set_size: 0.03
+dataset_prepared_path: /workspace/last_run_prepared_data
+
+# =========================
+# Sequence / packing
+# =========================
+sequence_len: 4096
+pad_to_sequence_len: true
+sample_packing: true
+
+# =========================
+# Precision: BF16 (FP8 disabled)
+# =========================
+load_in_4bit: false
+load_in_8bit: false
+bf16: true
+fp8: false
+fp8_enable_fsdp_float8_all_gather: false
+attn_implementation: flash_attention_2
+torch_compile: true
+low_cpu_mem_usage: false
+
+# =========================
+# Training hyperparameters
+# =========================
+micro_batch_size: 4
+gradient_accumulation_steps: 1
+num_epochs: 6
+optimizer: adamw_torch_fused
+learning_rate: 5.0e-5
+weight_decay: 0.01
+max_grad_norm: 1.0
+lr_scheduler: constant_with_warmup
+warmup_ratio: 0.03
+seed: 42
+
+# =========================
+# Logging / saving
+# =========================
+logging_steps: 1
+evals_per_epoch: 2
+saves_per_epoch: 2
+save_total_limit: 12
+output_dir: /workspace/results
+save_safetensors: true
+save_only_model: true
+
+# =========================
+# Wandb
+# =========================
+wandb_project: "muneer"
+wandb_name: "muneer-v1"
+wandb_watch: "false"
+wandb_log_model: "false"
+
+# =========================
+# Sharding: FSDP2
+# =========================
+fsdp_version: 2
+fsdp_config:
+  offload_params: false
+  cpu_ram_efficient_loading: false
+  auto_wrap_policy: TRANSFORMER_BASED_WRAP
+  transformer_layer_cls_to_wrap: Qwen3DecoderLayer
+  state_dict_type: FULL_STATE_DICT
+  reshard_after_forward: true
+  activation_checkpointing: true
+
+# =========================
+# Dataloader
+# =========================
+dataloader_num_workers: 2
+dataloader_pin_memory: false

@@ -1,0 +1,89 @@
+Muneer: the rights to the project's assets
+
+Muneer has three assets with different rights: the code in this repository, the model,
+and its training data. The model and the training data are private and not in this
+repository.
+
+
+1. The code (this repository)
+
+The code was built during the challenge period, 4 to 6 October 2026, of the AI Challenge
+Serving Islamic Content, organised by the Bathel Foundation. Its rights are subject to the
+challenge's terms and conditions. It is published in this public repository because the
+challenge requires it. This file grants no other rights.
+
+The open-source components the code uses remain under their own licences. Their versions
+are pinned in deploy/constraints.txt and server/requirements.txt.
+
+
+2. The model (Muneer's weights; not in this repository)
+
+Ownership: wholly owned by the project owner, Ali Ibrahim Abuharb.
+Licence: it may be used only with his consent. The challenge's organiser may use it under
+a separate agreement with him.
+
+The weights are kept in a private Hugging Face repository and can be downloaded only with
+a read token the owner grants. The base model, Qwen3-14B, is licensed under Apache-2.0,
+which allows derived models to be built from it.
+
+
+3. The training data (not in this repository)
+
+Two kinds: data sourced from a number of da'wah associations, and data that is the fruit
+of the project owner's long collection work and great effort.
+Ownership: wholly owned by the project owner, Ali Ibrahim Abuharb.
+Licence: it may be used only with his consent. The challenge's organiser may use it under
+a separate agreement with him.
+
+The training data is not published. The training/ folder holds only the training
+configuration.
+
+
+4. Content rights
+
+The rights to the content of the websites used as training material belong to their
+owners. None of that text is published in this repository.
+
+
+------------------------------------------------------------------------------------------
+
+منير: حقوق أصول المشروع وتراخيصها
+
+لمنير ثلاثة أصول تختلف حقوقها: الشيفرة في هذا المستودع، والنموذج، وبيانات تدريبه. والنموذج
+وبيانات التدريب غير منشورين، ولا يحويهما هذا المستودع.
+
+
+١. شيفرة الحل (هذا المستودع)
+
+بُنيت الشيفرة في فترة التحدي (من 4 إلى 6 أكتوبر 2026) لتحدي الذكاء الاصطناعي في خدمة
+المحتوى الإسلامي، الذي تنظّمه مؤسسة باذل الأهلية، وتخضع حقوقها لشروط التحدي وأحكامه.
+تُنشر في مستودع عام على GitHub كما يشترط التحدي، ولا يمنح هذا الملف أي حقوق أخرى.
+
+وتبقى المكوّنات مفتوحة المصدر التي تستخدمها خاضعة لتراخيصها، وإصداراتها مثبّتة في الملفين
+deploy/constraints.txt و server/requirements.txt.
+
+
+٢. النموذج (أوزان منير؛ لا يحويها هذا المستودع)
+
+الملكية: مملوك بالكامل لمالك المشروع علي بن ابراهيم أبوحرب.
+الترخيص: لا يُستخدم إلا بموافقته، ويمكن للجهة المنظمة للتحدي استخدامه باتفاقية منفصلة معه.
+
+تُحفظ الأوزان في مستودع خاص على Hugging Face، ولا تُنزَّل إلا برمز قراءة يمنحه المالك.
+والنموذج الأساس Qwen3-14B مرخّص بـ Apache-2.0، الذي يجيز بناء نماذج مشتقة منه.
+
+
+٣. بيانات التدريب (لا يحويها هذا المستودع)
+
+نوعان: بيانات مصدرها عدد من جمعيات الدعوة، وبيانات هي ثمرة جمعٍ وعملٍ طويل وجهدٍ كبير
+من مالك المشروع علي بن ابراهيم أبوحرب.
+الملكية: مملوكة بالكامل لمالك المشروع علي بن ابراهيم أبوحرب.
+الترخيص: لا تُستخدم إلا بموافقته، ويمكن للجهة المنظمة للتحدي استخدامها باتفاقية منفصلة معه.
+
+لا تُنشر بيانات التدريب، ولا يحويها المستودع العام؛ إذ يضم مجلد training إعدادات التدريب
+وحدها.
+
+
+٤. حقوق المحتوى
+
+حقوق محتوى المواقع التي استُخدمت مادةً لتدريب النموذج محفوظة لأصحابها، ولا تُنشر نصوصها
+في هذا المستودع.

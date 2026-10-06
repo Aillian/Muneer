@@ -1,0 +1,21 @@
+{# Muneer's system prompt comes first: the request's own system message if it has one, or else the
+   server's default, which launch.py passes as default_system_prompt (from server/system_prompt.md) #}
+{%- if default_system_prompt is defined and default_system_prompt and not (messages | selectattr('role', 'equalto', 'system') | list) %}
+    {{- '<|im_start|>system\n' + default_system_prompt + '<|im_end|>\n' }}
+{%- endif %}
+{# Process the messages in the conversation #}
+{%- for message in messages %}
+    {# Ensure content is a string, default to empty if not (e.g., for image inputs not handled here) #}
+    {%- set content = message.content if message.content is string else '' %}
+    {%- if message.role == 'system' %}
+        {{- '<|im_start|>system\n' + content + '<|im_end|>\n' }}
+    {%- elif message.role == 'user' %}
+        {{- '<|im_start|>user\n' + content + '<|im_end|>\n' }}
+    {%- elif message.role == 'assistant' %}
+        {{- '<|im_start|>assistant\n' + content + '<|im_end|>\n' }}
+    {%- endif %}
+{%- endfor %}
+{# Add the prompt for the assistant to generate a response #}
+{%- if add_generation_prompt %}
+    {{- '<|im_start|>assistant\n' }}
+{%- endif %}

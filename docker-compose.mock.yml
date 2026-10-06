@@ -1,0 +1,31 @@
+# Adds the mock model server, so the whole app runs without a GPU:
+#   docker compose -f docker-compose.yml -f docker-compose.mock.yml up --build
+#   docker compose down --remove-orphans      stop both
+# The app then talks to the mock instead of MUNEER_BASE_URL from .env. The
+# guardrail and the simulated da'i still use OpenAI (OPENAI_API_KEY).
+
+services:
+  mock:
+    build:
+      context: .
+      dockerfile: deploy/app.Dockerfile
+    command: ["python", "-m", "mock_muneer", "--host", "0.0.0.0", "--port", "8000"]
+    env_file: .env  # MUNEER_API_KEY: the mock checks the same key the app sends
+    environment:  # the mock needs none of these
+      HF_TOKEN: ""
+      OPENAI_API_KEY: ""
+      ADMIN_PASSCODE: ""
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=4)"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  app:
+    environment:
+      MUNEER_BASE_URL: http://mock:8000/v1
+    depends_on:
+      mock:
+        condition: service_healthy

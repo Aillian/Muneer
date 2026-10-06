@@ -1,0 +1,4 @@
+# The Muneer app: Gradio on top of the pipeline.
+-r ../pipeline/requirements.txt
+gradio==6.28.0
+python-dotenv>=1.0

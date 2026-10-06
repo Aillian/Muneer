@@ -1,0 +1,5 @@
+# Model server. Install on the GPU machine (Linux + NVIDIA CUDA).
+# vLLM is pinned: launch.py uses flags checked against this release.
+vllm==0.29.0
+huggingface_hub>=1.31
+python-dotenv>=1.0

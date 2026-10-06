@@ -1,0 +1,4 @@
+# Mock Muneer: a scripted stand-in for the model server (no GPU needed).
+starlette>=0.46
+uvicorn>=0.30
+python-dotenv>=1.0

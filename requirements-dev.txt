@@ -1,0 +1,7 @@
+# Everything needed to run all the tests on a laptop. No GPU or vLLM needed.
+#   pip install -r requirements-dev.txt
+#   python -m pytest
+-r server/requirements-dev.txt
+-r pipeline/requirements.txt
+-r app/requirements.txt
+-r mock_muneer/requirements.txt

@@ -1,0 +1,19 @@
+# Runs the whole test suite in Linux, with the package versions pinned in
+# deploy/constraints.txt. No GPU and no OpenAI calls are needed:
+#   docker compose -f docker-compose.test.yml run --rm tests
+
+name: muneer-tests
+
+services:
+  tests:
+    image: python:3.14-slim
+    working_dir: /src
+    volumes:
+      - .:/src:ro
+    environment:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PIP_ROOT_USER_ACTION: ignore
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+    command: >-
+      sh -c "pip install -q -c deploy/constraints.txt -r requirements-dev.txt
+      && python -m pytest -q -p no:cacheprovider"
